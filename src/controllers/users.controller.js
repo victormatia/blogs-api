@@ -1,0 +1,15 @@
+const usersService = require('../services/users.service');
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const { token, message } = await usersService.login(email, password);
+
+  if (message) return res.status(400).json({ message });
+
+  res.status(200).json({ token });
+};
+
+module.exports = {
+  login,
+};
