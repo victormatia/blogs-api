@@ -34,7 +34,7 @@ const checksUserRegistrationFields = (req, res, next) => {
   next();
 };
 
-const checkGetUserAuthorization = (req, res, next) => {
+const checkGetUserAuthorization = (req, res, next) => { // mudar o nome para 'checksFieldAuthorization'
   const { headers } = req;
 
   const areValidFields = checksFields(['authorization'], Object.keys(headers));
@@ -46,8 +46,21 @@ const checkGetUserAuthorization = (req, res, next) => {
   next();
 };
 
+const checkNameField = (req, res, next) => {
+  const { body } = req;
+
+  const areValidFields = checksFields(['name'], Object.keys(body));
+
+  if (!areValidFields) {
+    return res.status(400).json({ message: '"name" is required' }); 
+  }
+
+  next();
+};
+
 module.exports = {
   checksLoginFields,
   checksUserRegistrationFields,
   checkGetUserAuthorization,
+  checkNameField,
 };

@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
   },
   {
+    sequelize,
     underscored: true,
     timestamps: false,
   });
