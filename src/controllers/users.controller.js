@@ -20,7 +20,18 @@ const postUser = async (req, res) => {
   res.status(201).json({ token });
 };
 
+const getAllUsers = async (req, res) => {
+  const { authorization } = req.headers;
+  
+  const { result, message } = await usersService.getAllUsers(authorization);
+
+  if (message) return res.status(401).json({ message });
+
+  res.status(200).json(result);
+};
+
 module.exports = {
   login,
   postUser,
+  getAllUsers,
 };

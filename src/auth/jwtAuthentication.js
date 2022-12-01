@@ -12,6 +12,16 @@ const createToken = (payload) => {
   return token;
 };
 
+const validateToken = (token) => {
+  try {
+    const result = jwt.verify(token, secret);
+    return { result };
+  } catch (error) {
+    return { message: 'Expired or invalid token' };
+  }
+};
+
 module.exports = {
   createToken,
+  validateToken,
 };

@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { createToken } = require('../auth/jwtAuthentication');
+const { createToken, validateToken } = require('../auth/jwtAuthentication');
 
 const login = async (email, password) => {
   const result = await User.findOne({
@@ -33,7 +33,11 @@ const postUser = async (userInfos) => {
   return { token };
 };
 
-const getAllUsers = async () => {
+const getAllUsers = async (authorization) => {
+  const { message } = validateToken(authorization);
+
+  if (message) return { message };
+
   const result = await User.findAll();
 
   return { result };

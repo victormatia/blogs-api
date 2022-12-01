@@ -32,9 +32,22 @@ const checksUserRegistrationFields = (req, res, next) => {
   }
 
   next();
-}; 
+};
+
+const checkGetUserAuthorization = (req, res, next) => {
+  const { headers } = req;
+
+  const areValidFields = checksFields(['authorization'], Object.keys(headers));
+
+  if (!areValidFields || !(headers.authorization.length)) {
+    return res.status(401).json({ message: 'Token not found' }); 
+  }
+
+  next();
+};
 
 module.exports = {
   checksLoginFields,
   checksUserRegistrationFields,
+  checkGetUserAuthorization,
 };
