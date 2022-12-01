@@ -11,4 +11,6 @@ route.post('/user', checksUserRegistrationFields, usersController.postUser);
 
 route.get('/user', checkGetUserAuthorization, usersController.getAllUsers);
 
+route.get('/user/:id', checkGetUserAuthorization, usersController.getUser);
+
 module.exports = route;

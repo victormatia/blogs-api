@@ -45,8 +45,25 @@ const getAllUsers = async (authorization) => {
   return { result };
 };
 
+const getUser = async (id, authorization) => {
+  const { message } = validateToken(authorization);
+
+  if (message) return { message };
+
+  let result = await User.findByPk(id);
+
+  if (!result) return { message: 'User does not exist' };
+
+  const { password: _, ...resultNoPassword } = result.dataValues;
+
+  result = resultNoPassword;
+
+  return { result };
+};
+
 module.exports = {
   login,
   postUser,
   getAllUsers,
+  getUser,
 };

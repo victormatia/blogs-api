@@ -30,8 +30,22 @@ const getAllUsers = async (req, res) => {
   res.status(200).json(result);
 };
 
+const getUser = async (req, res) => {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+
+  const { result, message } = await usersService.getUser(id, authorization);
+  
+  if (message && message !== 'Expired or invalid token') return res.status(404).json({ message });
+  
+  if (message) return res.status(401).json({ message });
+
+  res.status(200).json(result);
+};
+
 module.exports = {
   login,
   postUser,
   getAllUsers,
+  getUser,
 };
