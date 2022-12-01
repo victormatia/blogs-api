@@ -10,6 +10,17 @@ const login = async (req, res) => {
   res.status(200).json({ token });
 };
 
+const postUser = async (req, res) => {
+  const { body } = req;
+
+  const { token, message } = await usersService.postUser(body);
+
+  if (message) return res.status(409).json({ message });
+
+  res.status(201).json({ token });
+};
+
 module.exports = {
   login,
+  postUser,
 };

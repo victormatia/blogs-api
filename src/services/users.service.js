@@ -17,6 +17,30 @@ const login = async (email, password) => {
   return { message: 'Invalid fields' };
 };
 
+const postUser = async (userInfos) => {
+  const { email } = userInfos;
+
+  const user = await User.findOne({
+    where: { email },
+  });
+  
+  if (user) return { message: 'User already registered' };
+
+  await User.create(userInfos);
+
+  const token = createToken({ email });
+
+  return { token };
+};
+
+const getAllUsers = async () => {
+  const result = await User.findAll();
+
+  return { result };
+};
+
 module.exports = {
   login,
+  postUser,
+  getAllUsers,
 };
