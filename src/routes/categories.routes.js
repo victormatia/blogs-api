@@ -8,6 +8,8 @@ route.post(
   '/categories',
   checkNameField,
   checkGetUserAuthorization, categoriesController.postCategory,
-  );
+);
+
+route.get('/categories', checkGetUserAuthorization, categoriesController.getAllCategories);
 
 module.exports = route;

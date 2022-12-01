@@ -11,6 +11,17 @@ const postCategory = async (req, res) => {
   res.status(201).json(result);
 };
 
+const getAllCategories = async (req, res) => {
+  const { authorization } = req.headers;
+
+  const { result, message } = await categoriesService.getAllCategories(authorization);
+
+  if (message) return res.status(401).json({ message });
+
+  res.status(200).json(result);
+}; 
+
 module.exports = {
   postCategory,
+  getAllCategories,
 };
