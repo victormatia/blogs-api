@@ -38,7 +38,9 @@ const getAllUsers = async (authorization) => {
 
   if (message) return { message };
 
-  const result = await User.findAll();
+  let result = await User.findAll();
+
+  result = result.map(({ id, displayName, email, image }) => ({ id, displayName, email, image }));
 
   return { result };
 };
