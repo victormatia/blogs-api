@@ -10,11 +10,12 @@ module.exports = (seqielize, DataTypes) => {
   {
     seqielize,
     underscored: true,
+    timestamps: false,
   });
 
   blogPost.associate = (models) => {
     blogPost.belongsTo(models.User, {
-      as: 'userInfos',
+      as: 'user',
       foreignKey: 'id'
     })
   };
