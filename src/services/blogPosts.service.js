@@ -44,7 +44,11 @@ const getAllBlogPosts = async (authorization) => {
   if (message) return { message };
 
   const result = await BlogPost.findAll({ include: [
-    { model: User, as: 'user', attributes: { exclude: ['password'] } },
+    {
+      model: User,
+      as: 'user',
+      attributes: { exclude: ['password'] },
+    },
     { 
       model: Category,
       as: 'categories',
@@ -55,7 +59,31 @@ const getAllBlogPosts = async (authorization) => {
   return { result };  
 };
 
+const getBlogPostById = async (authorization, id) => {
+  const { message } = validateToken(authorization);
+
+  if (message) return { message };
+
+  const result = await BlogPost.findByPk(id, { include: [
+    {
+      model: User,
+      as: 'user',
+      attributes: { exclude: ['password'] },
+    },
+    { 
+      model: Category,
+      as: 'categories',
+      attributes: { exclude: ['title'] },
+    },
+  ] });
+
+  if (!result) return { message: 'Post does not exist' };
+
+  return { result };  
+};
+
 module.exports = {
   postBlogPost,
   getAllBlogPosts,
+  getBlogPostById,
 };

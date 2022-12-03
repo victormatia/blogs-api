@@ -11,6 +11,16 @@ route.post(
     blogPostsController.postBlogPost,
   );
 
-route.get('/post', checkGetUserAuthorization, blogPostsController.getAllBlogPosts);
+route.get(
+    '/post',
+    checkGetUserAuthorization,
+    blogPostsController.getAllBlogPosts,
+  );
+
+route.get(
+  '/post/:id',
+  checkGetUserAuthorization,
+  blogPostsController.getBlogPostById,
+);
 
 module.exports = route;
