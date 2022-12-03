@@ -1,5 +1,17 @@
 const blogPostService = require('../services/blogPosts.service');
 
+const postBlogPost = async (req, res) => {
+  const { authorization } = req.headers;
+  const { body } = req;
+
+  const { result, message } = await blogPostService.postBlogPost(authorization, body);
+
+  if (message && message === 'one or more "categoryIds" not found') return res.status(400).json({ message });
+  if (message) return res.status(401).json({ message });
+
+  res.status(201).json(result);
+}; 
+
 const getAllBlogPosts = async (req, res) => {
   const { authorization } = req.headers;
 
@@ -11,5 +23,6 @@ const getAllBlogPosts = async (req, res) => {
 };
 
 module.exports = {
+  postBlogPost,
   getAllBlogPosts,
 };

@@ -58,9 +58,27 @@ const checkNameField = (req, res, next) => {
   next();
 };
 
+const checkNewPostFields = (req, res, next) => {
+  const { body } = req;
+
+  const areValidFields = checksFields(['title', 'content', 'categoryIds'], Object.keys(body));
+
+  if (
+      !areValidFields
+      || !(body.title.length)
+      || !(body.content.length)
+      || !(body.categoryIds.length)
+    ) {
+    return res.status(400).json({ message: 'Some required fields are missing' }); 
+  }
+
+  next();
+};
+
 module.exports = {
   checksLoginFields,
   checksUserRegistrationFields,
   checkGetUserAuthorization,
   checkNameField,
+  checkNewPostFields,
 };
