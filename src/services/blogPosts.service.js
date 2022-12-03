@@ -82,8 +82,25 @@ const getBlogPostById = async (authorization, id) => {
   return { result };  
 };
 
+const uptadePost = async (authorization, id, postUpdated) => {
+  const { result, message } = validateToken(authorization);
+
+  const { email } = result;
+
+  const user = await User.findOne({ where: { email } });
+
+  if (message) return { message };
+
+  const update = await BlogPost.update({ ...postUpdated }, { where: { id, userId: user.id } });
+
+  const post = await BlogPost.findOne({ where: { id } });
+
+  if (update[0] > 0) return { result: post };
+};
+
 module.exports = {
   postBlogPost,
   getAllBlogPosts,
   getBlogPostById,
+  uptadePost,
 };

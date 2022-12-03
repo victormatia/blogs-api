@@ -23,4 +23,10 @@ route.get(
   blogPostsController.getBlogPostById,
 );
 
+route.put(
+  '/post/:id',
+  checkGetUserAuthorization,
+  blogPostsController.uptadePost,
+);
+
 module.exports = route;

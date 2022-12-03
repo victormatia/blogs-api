@@ -37,8 +37,21 @@ const getBlogPostById = async (req, res) => {
   res.status(200).json(result);
 };
 
+const uptadePost = async (req, res) => {
+  const { authorization } = req.headers;
+  const { body } = req;
+  const { id } = req.params;
+
+  const { result, message } = await blogPostService.uptadePost(authorization, id, body);
+
+  if (message) return res.status(401).json({ message });
+
+  res.status(200).json(result);
+};
+
 module.exports = {
   postBlogPost,
   getAllBlogPosts,
   getBlogPostById,
+  uptadePost,
 };
