@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, User, Category, sequelize, PostCategory } = require('../models');
 const { validateToken } = require('../auth/jwtAuthentication');
 
@@ -125,10 +126,35 @@ const deletePost = async (authorization, id) => {
   return {};
 };
 
+const findPostByTerm = async (authorization, term) => {
+  const { message } = validateToken(authorization);
+  
+  if (message) return { message };
+
+  const resultByTitle = await BlogPost.findAll({
+    where: { title: { [Op.like]: `%${term}` } },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', attributes: { exclude: ['title'] } },
+    ] });
+  const resultByContent = await BlogPost.findAll({
+    where: { content: { [Op.like]: `%${term}` } },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', attributes: { exclude: ['title'] } },
+    ] });
+
+  if (resultByTitle.length) return { result: resultByTitle };
+  if (resultByContent.length) return { result: resultByContent };
+
+  return { result: [] };
+};
+
 module.exports = {
   postBlogPost,
   getAllBlogPosts,
   getBlogPostById,
   uptadePost,
   deletePost,
+  findPostByTerm,
 };

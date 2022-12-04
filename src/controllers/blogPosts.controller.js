@@ -26,12 +26,26 @@ const getAllBlogPosts = async (req, res) => {
 };
 
 const getBlogPostById = async (req, res) => {
+  console.log('getOne');
+
   const { authorization } = req.headers;
   const { id } = req.params;
 
   const { result, message } = await blogPostService.getBlogPostById(authorization, id);
 
   if (message && message === 'Post does not exist') return res.status(404).json({ message });
+  if (message) return res.status(401).json({ message });
+
+  res.status(200).json(result);
+};
+
+const findPostByTerm = async (req, res) => {
+  console.log('findoByTerm');
+  const { q } = req.query;
+  const { authorization } = req.headers;
+
+  const { result, message } = await blogPostService.findPostByTerm(authorization, q);
+
   if (message) return res.status(401).json({ message });
 
   res.status(200).json(result);
@@ -67,4 +81,5 @@ module.exports = {
   getBlogPostById,
   uptadePost,
   deletePost,
+  findPostByTerm,
 };
