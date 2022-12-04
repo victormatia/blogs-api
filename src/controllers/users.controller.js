@@ -43,9 +43,20 @@ const getUser = async (req, res) => {
   res.status(200).json(result);
 };
 
+const deleteUser = async (req, res) => {
+  const { authorization } = req.headers;
+
+  const { message } = await usersService.deleteUser(authorization);
+
+  if (message) return res.status(401).json({ message });
+
+  res.status(204).end();
+};
+
 module.exports = {
   login,
   postUser,
   getAllUsers,
   getUser,
+  deleteUser,
 };

@@ -13,4 +13,6 @@ route.get('/user', checkGetUserAuthorization, usersController.getAllUsers);
 
 route.get('/user/:id', checkGetUserAuthorization, usersController.getUser);
 
+route.delete('/user/me', checkGetUserAuthorization, usersController.deleteUser);
+
 module.exports = route;

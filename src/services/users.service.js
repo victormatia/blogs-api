@@ -61,9 +61,24 @@ const getUser = async (id, authorization) => {
   return { result };
 };
 
+const deleteUser = async (authorization) => {
+  const { result, message } = validateToken(authorization);
+  
+  if (message) return { message };
+  
+  const { email } = result;
+  
+  const user = await User.findOne({ where: { email } });
+
+  await User.destroy({ where: { id: user.id } });
+
+  return {};
+};
+
 module.exports = {
   login,
   postUser,
   getAllUsers,
   getUser,
+  deleteUser,
 };
