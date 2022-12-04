@@ -120,9 +120,7 @@ const deletePost = async (authorization, id) => {
 
   if (user.id !== postRequired.userId) return { message: 'Unauthorized user' };
 
-  const test = await BlogPost.destroy({ where: { id } });
-
-  return { result: test };
+  await BlogPost.destroy({ where: { id } });
 };
 
 module.exports = {
