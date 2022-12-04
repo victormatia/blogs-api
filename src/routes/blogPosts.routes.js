@@ -31,4 +31,10 @@ route.put(
   blogPostsController.uptadePost,
 );
 
+route.delete(
+  '/post/:id',
+  checkGetUserAuthorization,
+  blogPostsController.deletePost,
+);
+
 module.exports = route;

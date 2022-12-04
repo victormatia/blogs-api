@@ -105,9 +105,30 @@ const uptadePost = async (authorization, id, postUpdated) => {
   return { result: post };
 };
 
+const deletePost = async (authorization, id) => {
+  const { result, message } = validateToken(authorization);
+  
+  if (message) return { message };
+  
+  const { email } = result;
+  
+  const user = await User.findOne({ where: { email } });
+
+  const postRequired = await BlogPost.findByPk(id);
+
+  if (!postRequired) return { message: 'Post does not exist' };
+
+  if (user.id !== postRequired.userId) return { message: 'Unauthorized user' };
+
+  const test = await BlogPost.destroy({ where: { id } });
+
+  return { result: test };
+};
+
 module.exports = {
   postBlogPost,
   getAllBlogPosts,
   getBlogPostById,
   uptadePost,
+  deletePost,
 };
