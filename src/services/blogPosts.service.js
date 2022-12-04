@@ -84,18 +84,25 @@ const getBlogPostById = async (authorization, id) => {
 
 const uptadePost = async (authorization, id, postUpdated) => {
   const { result, message } = validateToken(authorization);
-
+  
+  if (message) return { message };
+  
   const { email } = result;
-
+  
   const user = await User.findOne({ where: { email } });
 
-  if (message) return { message };
+  const postRequired = await BlogPost.findByPk(id);
 
-  const update = await BlogPost.update({ ...postUpdated }, { where: { id, userId: user.id } });
+  if (user.id !== postRequired.userId) return { message: 'Unauthorized user' };
 
-  const post = await BlogPost.findOne({ where: { id } });
+  await BlogPost.update({ ...postUpdated }, { where: { id, userId: user.id } });
 
-  if (update[0] > 0) return { result: post };
+  const post = await BlogPost.findByPk(id, { include: [
+    { model: User, as: 'user', attributes: { exclude: ['password'] } },
+    { model: Category, as: 'categories', attributes: { exclude: ['title'] } },
+  ] });
+
+  return { result: post };
 };
 
 module.exports = {

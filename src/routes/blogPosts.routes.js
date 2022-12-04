@@ -1,6 +1,7 @@
 const express = require('express');
 const blogPostsController = require('../controllers/blogPosts.controller');
-const { checkGetUserAuthorization, checkNewPostFields } = require('../middlewares');
+const { checkGetUserAuthorization,
+  checkNewPostFields, checkPostUptatedFields } = require('../middlewares');
 
 const route = express.Router();
 
@@ -25,6 +26,7 @@ route.get(
 
 route.put(
   '/post/:id',
+  checkPostUptatedFields,
   checkGetUserAuthorization,
   blogPostsController.uptadePost,
 );
